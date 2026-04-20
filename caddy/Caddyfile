@@ -1,0 +1,28 @@
+git.stifting.at {
+	reverse_proxy forgejo:3000
+	encode gzip zstd
+}
+
+bim.stifting.at {
+	handle /api/* {
+		reverse_proxy bim-backend:8000
+	}
+	handle /docs {
+		reverse_proxy bim-backend:8000
+	}
+	handle /openapi.json {
+		reverse_proxy bim-backend:8000
+	}
+	handle /health {
+		reverse_proxy bim-backend:8000
+	}
+	handle {
+		reverse_proxy bim-frontend:5173
+	}
+	encode gzip zstd
+}
+
+demo.stifting.at {
+	redir https://bim.stifting.at{uri} permanent
+}
+
